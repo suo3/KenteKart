@@ -1,6 +1,6 @@
 # KenteKart
 
-A modern marketplace platform for buying, selling, and swapping items in Ghana. Built with React, TypeScript, and Supabase.
+A modern marketplace platform for buying, selling, and swapping items. Built with React, TypeScript, and Supabase.
 
 ## Features
 
