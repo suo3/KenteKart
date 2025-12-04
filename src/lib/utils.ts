@@ -46,3 +46,32 @@ export function extractItemId(param: string): string {
   
   return param;
 }
+
+/**
+ * Generate a user-friendly URL for user profile pages
+ */
+export function generateUserUrl(id: string, displayName: string): string {
+  const slug = generateSlug(displayName || 'user');
+  const shortId = id.slice(0, 8);
+  return `/user/${slug}-${shortId}`;
+}
+
+/**
+ * Extract the user ID from a slug-based URL parameter
+ * Supports both new format (slug-shortId) and old format (full UUID)
+ */
+export function extractUserId(param: string): string {
+  // Check if it's a full UUID (old format)
+  const uuidPattern = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+  if (uuidPattern.test(param)) {
+    return param;
+  }
+  
+  // Extract short ID from the end of slug (last 8 characters after the last hyphen)
+  const parts = param.split('-');
+  if (parts.length > 0) {
+    return parts[parts.length - 1];
+  }
+  
+  return param;
+}
