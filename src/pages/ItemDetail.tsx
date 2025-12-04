@@ -61,7 +61,7 @@ const ItemDetail = () => {
       // Check if it's a full UUID or short ID
       const isFullUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(itemId);
       
-      let query = supabase
+      const baseQuery = supabase
         .from('listings')
         .select(`
           *,
@@ -75,14 +75,20 @@ const ItemDetail = () => {
         `)
         .eq('status', 'active');
       
-      if (isFullUuid) {
-        query = query.eq('id', itemId);
-      } else {
-        // Short ID - use LIKE to match the beginning
-        query = query.like('id', `${itemId}%`);
-      }
+      let data;
+      let error;
       
-      const { data, error } = await query.single();
+      if (isFullUuid) {
+        // Direct match for full UUID
+        const result = await baseQuery.eq('id', itemId).maybeSingle();
+        data = result.data;
+        error = result.error;
+      } else {
+        // Short ID - use filter with text cast
+        const result = await baseQuery.filter('id::text', 'like', `${itemId}%`).maybeSingle();
+        data = result.data;
+        error = result.error;
+      }
 
       if (error) {
         console.error('Error fetching item:', error);
