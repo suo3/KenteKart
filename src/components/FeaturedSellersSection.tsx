@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { UserRatingDisplay } from "@/components/UserRatingDisplay";
+import { generateUserUrl } from "@/lib/utils";
 import defaultProfile1 from "@/assets/default-profile-1.jpg";
 import defaultProfile2 from "@/assets/default-profile-2.jpg";
 import defaultProfile3 from "@/assets/default-profile-3.jpg";
@@ -48,8 +49,8 @@ export const FeaturedSellersSection = () => {
     return null;
   }
 
-  const handleSellerClick = (sellerId: string) => {
-    navigate(`/user/${sellerId}`);
+  const handleSellerClick = (sellerId: string, displayName: string) => {
+    navigate(generateUserUrl(sellerId, displayName));
   };
 
   return (
@@ -86,7 +87,7 @@ export const FeaturedSellersSection = () => {
               <CarouselItem key={seller.id} className="pl-2 md:pl-4 basis-full sm:basis-1/2 lg:basis-1/3 xl:basis-1/4">
                 <Card 
                   className="group border border-emerald-600 cursor-pointer hover:shadow-lg transition-all duration-300 hover:-translate-y-1 bg-gradient-to-br from-emerald-100 to-primary-200 "
-                  onClick={() => handleSellerClick(profile.id)}
+                  onClick={() => handleSellerClick(profile.id, displayName)}
                 >
                   <CardContent className="p-6 text-center">
                     {/* Avatar */}
@@ -151,7 +152,7 @@ export const FeaturedSellersSection = () => {
                       className="w-full border-emerald-600 group-hover:bg-emerald-600 group-hover:text-primary-foreground transition-colors"
                       onClick={(e) => {
                         e.stopPropagation();
-                        handleSellerClick(profile.id);
+                        handleSellerClick(profile.id, displayName);
                       }}
                     >
                       View Profile
