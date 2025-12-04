@@ -61,34 +61,60 @@ const ItemDetail = () => {
       // Check if it's a full UUID or short ID
       const isFullUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(itemId);
       
-      const baseQuery = supabase
-        .from('listings')
-        .select(`
-          *,
-          profiles!listings_user_id_fkey (
-            first_name,
-            last_name,
-            username,
-            avatar,
-            phone_number
-          )
-        `)
-        .eq('status', 'active');
-      
-      let data;
+      let listingData;
       let error;
       
       if (isFullUuid) {
         // Direct match for full UUID
-        const result = await baseQuery.eq('id', itemId).maybeSingle();
-        data = result.data;
+        const result = await supabase
+          .from('listings')
+          .select(`
+            *,
+            profiles!listings_user_id_fkey (
+              first_name,
+              last_name,
+              username,
+              avatar,
+              phone_number
+            )
+          `)
+          .eq('id', itemId)
+          .eq('status', 'active')
+          .maybeSingle();
+        
+        listingData = result.data;
         error = result.error;
       } else {
-        // Short ID - use filter with text cast
-        const result = await baseQuery.filter('id::text', 'like', `${itemId}%`).maybeSingle();
-        data = result.data;
-        error = result.error;
+        // Short ID - use RPC function to find by short ID
+        const result = await supabase.rpc('find_listing_by_short_id', { short_id: itemId });
+        
+        if (result.data && result.data.length > 0) {
+          const listing = result.data[0];
+          // Fetch the full listing with profile data
+          const fullResult = await supabase
+            .from('listings')
+            .select(`
+              *,
+              profiles!listings_user_id_fkey (
+                first_name,
+                last_name,
+                username,
+                avatar,
+                phone_number
+              )
+            `)
+            .eq('id', listing.id)
+            .maybeSingle();
+          
+          listingData = fullResult.data;
+          error = fullResult.error;
+        } else {
+          listingData = null;
+          error = result.error;
+        }
       }
+      
+      const data = listingData;
 
       if (error) {
         console.error('Error fetching item:', error);

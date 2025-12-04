@@ -1089,6 +1089,27 @@ export type Database = {
       can_create_listing: { Args: never; Returns: boolean }
       check_user_coins: { Args: { required_coins: number }; Returns: boolean }
       delete_user_account: { Args: never; Returns: undefined }
+      find_listing_by_short_id: {
+        Args: { short_id: string }
+        Returns: {
+          category: string
+          condition: string
+          created_at: string
+          description: string
+          id: string
+          images: string[]
+          likes: number
+          location: string
+          price: number
+          status: string
+          title: string
+          updated_at: string
+          user_id: string
+          views: number
+          wanted_items: string[]
+          whatsapp_number: string
+        }[]
+      }
       get_admin_conversations_with_latest: {
         Args: never
         Returns: {
