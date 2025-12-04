@@ -20,6 +20,7 @@ import { FeaturedSellersSection } from "@/components/FeaturedSellersSection";
 import { FeaturedStoresCarousel } from "@/components/FeaturedStoresCarousel";
 import { SellerOnboardingBanner } from "@/components/SellerOnboardingBanner";
 import { VerifiedDistributorsSection } from "@/components/VerifiedDistributorsSection";
+import { PWAInstallPrompt } from "@/components/PWAInstallPrompt";
 import { useIndexLogic } from "@/hooks/useIndexLogic";
 import { usePlatformSettings } from "@/hooks/usePlatformSettings";
 
@@ -145,7 +146,9 @@ const Index = () => {
         open={showPostItemDialog}
         onOpenChange={setShowPostItemDialog}
       />
-      
+
+      {/* PWA Install Popup */}
+      <PWAInstallPrompt />
         {/* Footer */}
         <Footer />
       </div>

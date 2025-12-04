@@ -1086,20 +1086,11 @@ export type Database = {
         }
         Returns: undefined
       }
-      can_create_listing: {
-        Args: Record<PropertyKey, never>
-        Returns: boolean
-      }
-      check_user_coins: {
-        Args: { required_coins: number }
-        Returns: boolean
-      }
-      delete_user_account: {
-        Args: Record<PropertyKey, never>
-        Returns: undefined
-      }
+      can_create_listing: { Args: never; Returns: boolean }
+      check_user_coins: { Args: { required_coins: number }; Returns: boolean }
+      delete_user_account: { Args: never; Returns: undefined }
       get_admin_conversations_with_latest: {
-        Args: Record<PropertyKey, never>
+        Args: never
         Returns: {
           conv_id: string
           created_at: string
@@ -1119,7 +1110,7 @@ export type Database = {
         Returns: Database["public"]["Enums"]["admin_role"]
       }
       get_conversations_with_profiles: {
-        Args: Record<PropertyKey, never>
+        Args: never
         Returns: {
           conv_id: string
           created_at: string
@@ -1136,7 +1127,7 @@ export type Database = {
         }[]
       }
       get_conversations_with_unread: {
-        Args: Record<PropertyKey, never>
+        Args: never
         Returns: {
           conv_id: string
           created_at: string
@@ -1149,18 +1140,9 @@ export type Database = {
           user2_id: string
         }[]
       }
-      get_default_starting_coins: {
-        Args: Record<PropertyKey, never>
-        Returns: number
-      }
-      get_listing_cost: {
-        Args: Record<PropertyKey, never>
-        Returns: number
-      }
-      get_promotion_price: {
-        Args: { promotion_type: string }
-        Returns: number
-      }
+      get_default_starting_coins: { Args: never; Returns: number }
+      get_listing_cost: { Args: never; Returns: number }
+      get_promotion_price: { Args: { promotion_type: string }; Returns: number }
       get_public_profile: {
         Args: { profile_id: string }
         Returns: {
@@ -1179,30 +1161,15 @@ export type Database = {
           username: string
         }[]
       }
-      get_sale_cost: {
-        Args: Record<PropertyKey, never>
-        Returns: number
-      }
-      get_swap_cost: {
-        Args: Record<PropertyKey, never>
-        Returns: number
-      }
-      get_user_average_rating: {
-        Args: { user_uuid: string }
-        Returns: number
-      }
+      get_sale_cost: { Args: never; Returns: number }
+      get_swap_cost: { Args: never; Returns: number }
+      get_user_average_rating: { Args: { user_uuid: string }; Returns: number }
       get_user_favorites_count: {
         Args: { user_uuid?: string }
         Returns: number
       }
-      get_user_rating_count: {
-        Args: { user_uuid: string }
-        Returns: number
-      }
-      get_user_total_listings: {
-        Args: { user_uuid?: string }
-        Returns: number
-      }
+      get_user_rating_count: { Args: { user_uuid: string }; Returns: number }
+      get_user_total_listings: { Args: { user_uuid?: string }; Returns: number }
       increment_listing_likes: {
         Args: { listing_uuid: string }
         Returns: undefined
@@ -1211,14 +1178,8 @@ export type Database = {
         Args: { listing_uuid: string }
         Returns: undefined
       }
-      is_admin: {
-        Args: { user_uuid?: string }
-        Returns: boolean
-      }
-      is_anonymous_allowed: {
-        Args: Record<PropertyKey, never>
-        Returns: boolean
-      }
+      is_admin: { Args: { user_uuid?: string }; Returns: boolean }
+      is_anonymous_allowed: { Args: never; Returns: boolean }
       is_item_favorited: {
         Args: { listing_uuid: string; user_uuid?: string }
         Returns: boolean
@@ -1227,10 +1188,7 @@ export type Database = {
         Args: { listing_uuid: string }
         Returns: boolean
       }
-      requires_approval: {
-        Args: Record<PropertyKey, never>
-        Returns: boolean
-      }
+      requires_approval: { Args: never; Returns: boolean }
       spend_coins: {
         Args: { coin_amount: number; description: string }
         Returns: boolean
