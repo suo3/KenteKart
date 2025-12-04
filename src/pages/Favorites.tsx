@@ -11,6 +11,7 @@ import { Footer } from "@/components/Footer";
 import { Helmet } from "react-helmet";
 import { generatePageTitle, generateMetaDescription } from "@/constants/seo";
 import { AppHeader } from "@/components/AppHeader";
+import { generateItemUrl } from "@/lib/utils";
 
 const Favorites = () => {
   const navigate = useNavigate();
@@ -86,7 +87,7 @@ const Favorites = () => {
   };
 
   const handleItemClick = (item: Listing) => {
-    navigate(`/item/${item.id}`);
+    navigate(generateItemUrl(item.id, item.title));
   };
 
   const handleRemoveFromFavorites = async (item: Listing) => {

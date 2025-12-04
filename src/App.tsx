@@ -106,7 +106,7 @@ const App = () => {
               <Route path="/profile" element={<Profile />} />
               
               <Route path="/admin" element={<Admin />} />
-              <Route path="/item/:id" element={<ItemDetail />} />
+              <Route path="/item/:slug" element={<ItemDetail />} />
               <Route path="/favorites" element={<Favorites />} />
               <Route path="/categories" element={<Categories />} />
               <Route path="/category/:categorySlug" element={<Category />} />

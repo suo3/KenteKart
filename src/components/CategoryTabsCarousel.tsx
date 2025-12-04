@@ -9,6 +9,7 @@ import { ItemGrid } from "@/components/ItemGrid";
 import { Star, Crown, Zap, MapPin, Heart } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { getCategoryIcon } from "@/utils/categoryIcons";
+import { generateItemUrl } from "@/lib/utils";
 
 export const CategoryTabsCarousel = () => {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
@@ -126,8 +127,8 @@ export const CategoryTabsCarousel = () => {
     return null;
   }
 
-  const handleItemClick = (itemId: string) => {
-    navigate(`/item/${itemId}`);
+  const handleItemClick = (item: { id: string; title: string }) => {
+    navigate(generateItemUrl(item.id, item.title));
   };
 
   return (
@@ -205,7 +206,7 @@ export const CategoryTabsCarousel = () => {
                   <Card 
                     key={item.id}
                     className="group border border-black cursor-pointer hover:shadow-lg transition-all duration-300 hover:-translate-y-1"
-                    onClick={() => handleItemClick(item.id)}
+                    onClick={() => handleItemClick(item)}
                   >
                     <div className="relative overflow-hidden rounded-t-lg">
                       {firstImage ? (

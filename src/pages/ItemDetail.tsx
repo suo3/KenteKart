@@ -17,9 +17,11 @@ import { Helmet } from "react-helmet";
 import { generatePageTitle, generateMetaDescription } from "@/constants/seo";
 import { FeaturedStoresCarousel } from "@/components/FeaturedStoresCarousel";
 import { AppHeader } from "@/components/AppHeader";
+import { extractItemId, generateItemUrl } from "@/lib/utils";
 
 const ItemDetail = () => {
-  const { id } = useParams<{ id: string }>();
+  const { slug } = useParams<{ slug: string }>();
+  const id = slug ? extractItemId(slug) : undefined;
   const navigate = useNavigate();
   const { toast } = useToast();
   const { user } = useAuthStore();
@@ -56,7 +58,10 @@ const ItemDetail = () => {
     try {
       setIsLoading(true);
       
-      const { data, error } = await supabase
+      // Check if it's a full UUID or short ID
+      const isFullUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(itemId);
+      
+      let query = supabase
         .from('listings')
         .select(`
           *,
@@ -68,9 +73,16 @@ const ItemDetail = () => {
             phone_number
           )
         `)
-        .eq('id', itemId)
-        .eq('status', 'active')
-        .single();
+        .eq('status', 'active');
+      
+      if (isFullUuid) {
+        query = query.eq('id', itemId);
+      } else {
+        // Short ID - use LIKE to match the beginning
+        query = query.like('id', `${itemId}%`);
+      }
+      
+      const { data, error } = await query.single();
 
       if (error) {
         console.error('Error fetching item:', error);
@@ -314,7 +326,7 @@ const ItemDetail = () => {
         <meta property="og:image" content={displayImages[0]} />
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="630" />
-        <meta property="og:url" content={`https://kentekart.com/item/${item.id}`} />
+        <meta property="og:url" content={`https://kentekart.com${generateItemUrl(item.id, item.title)}`} />
         <meta property="og:site_name" content="KenteKart Ghana" />
         <meta property="og:locale" content="en_GH" />
         {item.price && <meta property="product:price:amount" content={item.price.toString()} />}
@@ -340,7 +352,7 @@ const ItemDetail = () => {
               "price": item.price || 0,
               "priceCurrency": "GHS",
               "availability": "https://schema.org/InStock",
-              "url": `https://kentekart.com/item/${item.id}`,
+              "url": `https://kentekart.com${generateItemUrl(item.id, item.title)}`,
               "seller": {
                 "@type": "Person",
                 "name": getUserDisplayName(item)
@@ -588,7 +600,7 @@ const ItemDetail = () => {
                   <div 
                     key={relatedItem.id}
                     className="bg-card rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow cursor-pointer"
-                    onClick={() => navigate(`/item/${relatedItem.id}`)}
+                    onClick={() => navigate(generateItemUrl(relatedItem.id, relatedItem.title))}
                   >
                     <div className="relative">
                       <img

@@ -15,6 +15,7 @@ import { useToast } from "@/hooks/use-toast";
 import { Listing } from "@/stores/listingStore";
 import { generatePageTitle, generateMetaDescription } from "@/constants/seo";
 import { FeaturedStoresCarousel } from "@/components/FeaturedStoresCarousel";
+import { generateItemUrl } from "@/lib/utils";
 
 interface UserProfile {
   id: string;
@@ -170,7 +171,7 @@ const UserProfile = () => {
   };
 
   const handleItemClick = (item: Listing) => {
-    navigate(`/item/${item.id}`);
+    navigate(generateItemUrl(item.id, item.title));
   };
 
   if (isLoading) {
