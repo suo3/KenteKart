@@ -9,9 +9,9 @@ import { LocationPermissionPrompt } from "@/components/LocationPermissionPrompt"
 import { PlatformAnnouncement } from "@/components/PlatformAnnouncement";
 import { MaintenanceMode } from "@/components/MaintenanceMode";
 import { Footer } from "@/components/Footer";
+import { SEOHead } from "@/components/SEOHead";
 import { useIndexLogic } from "@/hooks/useIndexLogic";
 import { usePlatformSettings } from "@/hooks/usePlatformSettings";
-import { Helmet } from "react-helmet";
 import { SidebarProvider, Sidebar, SidebarContent, SidebarTrigger } from "@/components/ui/sidebar";
 import { useIsMobile } from "@/hooks/use-mobile";
 
@@ -49,11 +49,12 @@ const Marketplace = () => {
 
   return (
     <>
-      <Helmet>
-        <title>Marketplace - Browse Items | KenteKart Ghana</title>
-        <meta name="description" content="Browse and discover amazing items in Ghana's premier trading marketplace. Find electronics, fashion, furniture and more." />
-        <meta name="keywords" content="marketplace, browse items, Ghana shopping, trade, electronics, fashion, furniture" />
-      </Helmet>
+      <SEOHead 
+        title="Marketplace - Browse Items"
+        description="Browse and discover amazing items in Ghana's premier trading marketplace. Find electronics, fashion, furniture and more. Pay with Mobile Money."
+        url="https://kentekart.com/marketplace"
+        keywords={['marketplace', 'browse items', 'Ghana shopping', 'trade', 'electronics', 'fashion', 'furniture', 'buy sell Ghana']}
+      />
       
       {isMobileDevice ? (
         // Mobile layout - keep existing structure
