@@ -21,6 +21,7 @@ import { FeaturedStoresCarousel } from "@/components/FeaturedStoresCarousel";
 import { SellerOnboardingBanner } from "@/components/SellerOnboardingBanner";
 import { VerifiedDistributorsSection } from "@/components/VerifiedDistributorsSection";
 import { PWAInstallPrompt } from "@/components/PWAInstallPrompt";
+import { SEOHead } from "@/components/SEOHead";
 import { useIndexLogic } from "@/hooks/useIndexLogic";
 import { usePlatformSettings } from "@/hooks/usePlatformSettings";
 
@@ -65,6 +66,7 @@ const Index = () => {
 
   return (
     <PullToRefresh onRefresh={handleRefresh}>
+      <SEOHead />
       <div className="min-h-screen bg-white">
         <AppHeader
           userLocation={userLocation}

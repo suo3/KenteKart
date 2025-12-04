@@ -305,12 +305,53 @@ const ItemDetail = () => {
     <>
       <Helmet>
         <title>{generatePageTitle(item.title)}</title>
-        <meta name="description" content={generateMetaDescription(item.description)} />
-        <meta property="og:title" content={item.title} />
-        <meta property="og:description" content={item.description || "Item available for swap on KenteKart Ghana"} />
+        <meta name="description" content={generateMetaDescription(item.description || `${item.title} - Available for sale on KenteKart Ghana`)} />
+        
+        {/* Open Graph for Facebook/WhatsApp */}
+        <meta property="og:type" content="product" />
+        <meta property="og:title" content={`${item.title} | KenteKart Ghana`} />
+        <meta property="og:description" content={item.description || `${item.title} available on KenteKart - Ghana's trusted marketplace`} />
         <meta property="og:image" content={displayImages[0]} />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
         <meta property="og:url" content={`https://kentekart.com/item/${item.id}`} />
+        <meta property="og:site_name" content="KenteKart Ghana" />
+        <meta property="og:locale" content="en_GH" />
+        {item.price && <meta property="product:price:amount" content={item.price.toString()} />}
+        <meta property="product:price:currency" content="GHS" />
+        
+        {/* Twitter Card */}
         <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={`${item.title} | KenteKart`} />
+        <meta name="twitter:description" content={item.description || `Available on KenteKart Ghana`} />
+        <meta name="twitter:image" content={displayImages[0]} />
+        <meta name="twitter:site" content="@kentekart" />
+        
+        {/* Product Structured Data */}
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Product",
+            "name": item.title,
+            "description": item.description,
+            "image": displayImages,
+            "offers": {
+              "@type": "Offer",
+              "price": item.price || 0,
+              "priceCurrency": "GHS",
+              "availability": "https://schema.org/InStock",
+              "url": `https://kentekart.com/item/${item.id}`,
+              "seller": {
+                "@type": "Person",
+                "name": getUserDisplayName(item)
+              }
+            },
+            "category": item.category,
+            "itemCondition": item.condition === 'New' 
+              ? "https://schema.org/NewCondition" 
+              : "https://schema.org/UsedCondition"
+          })}
+        </script>
       </Helmet>
 
       <div className="min-h-screen bg-background">
