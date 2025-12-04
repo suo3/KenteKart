@@ -13,7 +13,7 @@ import { useRatingStore } from "@/stores/ratingStore";
 import { usePlatformSettings } from "@/hooks/usePlatformSettings";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { generateItemUrl } from "@/lib/utils";
+import { generateItemUrl, generateUserUrl } from "@/lib/utils";
 
 interface ItemCardProps {
   item: Listing;
@@ -71,8 +71,12 @@ export const ItemCard = ({ item, onItemClick, onItemLike }: ItemCardProps) => {
   const handleOwnerClick = (e: React.MouseEvent) => {
     e.stopPropagation();
     e.preventDefault();
-    if (item.user_id) {
-      navigate(`/user/${item.user_id}`);
+    if (item.user_id && item.profiles) {
+      const profile = item.profiles as any;
+      const displayName = profile.first_name && profile.last_name 
+        ? `${profile.first_name} ${profile.last_name}` 
+        : profile.username || 'user';
+      navigate(generateUserUrl(item.user_id, displayName));
     }
   };
 

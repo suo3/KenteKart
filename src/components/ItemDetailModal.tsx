@@ -14,6 +14,7 @@ import { Share } from '@capacitor/share';
 import { Capacitor } from '@capacitor/core';
 import { useHaptics } from "@/hooks/useHaptics";
 import { useToast } from "@/hooks/use-toast";
+import { generateUserUrl } from "@/lib/utils";
 
 interface ItemDetailModalProps {
   item: Listing | null;
@@ -274,7 +275,8 @@ export const ItemDetailModal = ({
                       onClick={() => {
                         if (item.user_id) {
                           onClose();
-                          navigate(`/user/${item.user_id}`);
+                          const displayName = getUserDisplayName(item);
+                          navigate(generateUserUrl(item.user_id, displayName));
                         }
                       }}
                       className="font-medium text-gray-900 hover:text-primary transition-colors text-left"

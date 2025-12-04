@@ -1110,6 +1110,24 @@ export type Database = {
           whatsapp_number: string
         }[]
       }
+      find_profile_by_short_id: {
+        Args: { short_id: string }
+        Returns: {
+          achievements: string[]
+          avatar: string
+          bio: string
+          city: string
+          first_name: string
+          id: string
+          is_verified: boolean
+          joined_date: string
+          last_name: string
+          rating: number
+          region: string
+          total_sales: number
+          username: string
+        }[]
+      }
       get_admin_conversations_with_latest: {
         Args: never
         Returns: {

@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { UserRatingDisplay } from "@/components/UserRatingDisplay";
+import { generateUserUrl } from "@/lib/utils";
 import defaultProfile1 from "@/assets/default-profile-1.jpg";
 import defaultProfile2 from "@/assets/default-profile-2.jpg";
 import defaultProfile3 from "@/assets/default-profile-3.jpg";
@@ -130,9 +131,9 @@ export const FeaturedStoresCarousel = () => {
     return null;
   }
 
-  const handleStoreClick = (storeId: string, type: 'user' | 'distributor') => {
+  const handleStoreClick = (storeId: string, displayName: string, type: 'user' | 'distributor') => {
     if (type === 'user') {
-      navigate(`/user/${storeId}`);
+      navigate(generateUserUrl(storeId, displayName));
     } else {
       navigate(`/distributor/${storeId}`);
     }
@@ -198,7 +199,7 @@ export const FeaturedStoresCarousel = () => {
                       variant="outline"
                       size="sm"
                       className="h-auto flex ml-8 items-center  gap-2 px-3 py-2 bg-white border-black hover:bg-black/10 hover:border-primary/50 ttransition-all"
-                      onClick={() => handleStoreClick(profile.id, 'user')}
+                      onClick={() => handleStoreClick(profile.id, displayName, 'user')}
                     >
                       <img
                       hidden={!profile.profile_image_url}
@@ -229,7 +230,7 @@ export const FeaturedStoresCarousel = () => {
                       variant="outline"
                       size="sm"
                       className="h-auto flex ml-8 items-center  gap-2 px-3 py-2 bg-white border-black hover:bg-black/10 hover:border-primary/50 ttransition-all"
-                      onClick={() => handleStoreClick(distributorProfile.id, 'distributor')}
+                      onClick={() => handleStoreClick(distributorProfile.id, distributorProfile.name, 'distributor')}
                     >
                       <div className="w-8 h-8 rounded-full text-white bg-emerald-600 flex border border-white items-center justify-center text-medium font-semibold">
                         {distributorProfile.name.charAt(0).toUpperCase()}

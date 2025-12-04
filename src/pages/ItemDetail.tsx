@@ -17,7 +17,7 @@ import { Helmet } from "react-helmet";
 import { generatePageTitle, generateMetaDescription } from "@/constants/seo";
 import { FeaturedStoresCarousel } from "@/components/FeaturedStoresCarousel";
 import { AppHeader } from "@/components/AppHeader";
-import { extractItemId, generateItemUrl } from "@/lib/utils";
+import { extractItemId, generateItemUrl, generateUserUrl } from "@/lib/utils";
 
 const ItemDetail = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -534,7 +534,7 @@ const ItemDetail = () => {
                     </div>
                     <div>
                       <button 
-                        onClick={() => navigate(`/user/${item.user_id}`)}
+                        onClick={() => navigate(generateUserUrl(item.user_id!, getUserDisplayName(item)))}
                         className="font-medium text-foreground hover:text-primary hover:underline transition-colors text-left"
                       >
                         {getUserDisplayName(item)}

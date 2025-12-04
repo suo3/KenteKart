@@ -8,6 +8,7 @@ import { Star, Award, MapPin, ShoppingBag, Users } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
 import { UserRatingDisplay } from "./UserRatingDisplay";
+import { generateUserUrl } from "@/lib/utils";
 import kentePattern from "@/assets/kente-pattern.jpg";
 import defaultProfile1 from "@/assets/default-profile-1.jpg";
 import defaultProfile2 from "@/assets/default-profile-2.jpg";
@@ -70,8 +71,8 @@ export const FeaturedStoresSpotlight = () => {
     },
   });
 
-  const handleStoreClick = (storeId: string) => {
-    navigate(`/user/${storeId}`);
+  const handleStoreClick = (storeId: string, displayName: string) => {
+    navigate(generateUserUrl(storeId, displayName));
   };
 
   const getDisplayName = (profile: FeaturedStore['profiles']) => {
@@ -138,7 +139,7 @@ export const FeaturedStoresSpotlight = () => {
                 <div className="p-1 sm:p-2 md:p-3">
                   <Card 
                     className="relative overflow-hidden cursor-pointer transition-all duration-300 hover:scale-105 hover:z-50 group border-0 shadow-lg bg-transparent backdrop-blur-sm rounded-full w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48 mx-auto"
-                    onClick={() => handleStoreClick(profile.id)}
+                    onClick={() => handleStoreClick(profile.id, displayName)}
                   >
                     {/* Background Image */}
                     <div 

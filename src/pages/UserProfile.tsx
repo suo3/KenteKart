@@ -15,9 +15,9 @@ import { useToast } from "@/hooks/use-toast";
 import { Listing } from "@/stores/listingStore";
 import { generatePageTitle, generateMetaDescription } from "@/constants/seo";
 import { FeaturedStoresCarousel } from "@/components/FeaturedStoresCarousel";
-import { generateItemUrl } from "@/lib/utils";
+import { generateItemUrl, extractUserId } from "@/lib/utils";
 
-interface UserProfile {
+interface UserProfileData {
   id: string;
   username?: string;
   first_name?: string;
@@ -34,15 +34,18 @@ interface UserProfile {
 }
 
 const UserProfile = () => {
-  const { userId } = useParams();
+  const { userSlug } = useParams();
   const navigate = useNavigate();
   const { toast } = useToast();
   
-  const [profile, setProfile] = useState<UserProfile | null>(null);
+  const [profile, setProfile] = useState<UserProfileData | null>(null);
   const [listings, setListings] = useState<Listing[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [isDetailsExpanded, setIsDetailsExpanded] = useState(false);
+
+  // Extract the actual user ID from the slug
+  const userId = userSlug ? extractUserId(userSlug) : null;
 
   useEffect(() => {
     if (!userId) {
@@ -59,17 +62,32 @@ const UserProfile = () => {
     if (!userId) return;
 
     try {
-      const { data, error } = await supabase
-        .rpc('get_public_profile', { profile_id: userId });
-
-      if (error) throw error;
+      // Check if it's a full UUID or short ID
+      const isFullUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(userId);
       
-      if (!data || data.length === 0) {
+      let profileData;
+      let fetchError;
+      
+      if (isFullUuid) {
+        // Direct match for full UUID
+        const result = await supabase.rpc('get_public_profile', { profile_id: userId });
+        profileData = result.data;
+        fetchError = result.error;
+      } else {
+        // Short ID - use RPC function to find by short ID
+        const result = await supabase.rpc('find_profile_by_short_id', { short_id: userId });
+        profileData = result.data;
+        fetchError = result.error;
+      }
+
+      if (fetchError) throw fetchError;
+      
+      if (!profileData || profileData.length === 0) {
         setError("User not found");
         return;
       }
 
-      setProfile(data[0]);
+      setProfile(profileData[0]);
     } catch (error) {
       console.error('Error fetching user profile:', error);
       setError("Failed to load user profile");
@@ -82,7 +100,7 @@ const UserProfile = () => {
   };
 
   const fetchUserListings = async () => {
-    if (!userId) return;
+    if (!profile?.id) return;
 
     try {
       const { data, error } = await supabase
@@ -100,7 +118,7 @@ const UserProfile = () => {
             is_verified
           )
         `)
-        .eq('user_id', userId)
+        .eq('user_id', profile.id)
         .eq('status', 'active')
         .order('created_at', { ascending: false });
 
@@ -119,14 +137,21 @@ const UserProfile = () => {
     }
   };
 
-  const getUserDisplayName = (profile: UserProfile) => {
-    if (profile.first_name || profile.last_name) {
-      return `${profile.first_name || ''} ${profile.last_name || ''}`.trim();
+  // Fetch listings once we have the profile
+  useEffect(() => {
+    if (profile?.id) {
+      fetchUserListings();
     }
-    return profile.username || 'Anonymous User';
+  }, [profile?.id]);
+
+  const getUserDisplayName = (profileData: UserProfileData) => {
+    if (profileData.first_name || profileData.last_name) {
+      return `${profileData.first_name || ''} ${profileData.last_name || ''}`.trim();
+    }
+    return profileData.username || 'Anonymous User';
   };
 
-  const getUserAvatar = (profile: UserProfile) => {
+  const getUserAvatar = (profileData: UserProfileData) => {
     if (profile.first_name) {
       return profile.first_name.charAt(0).toUpperCase();
     }
@@ -136,20 +161,20 @@ const UserProfile = () => {
     return 'U';
   };
 
-  const getLocationString = (profile: UserProfile) => {
-    if (profile.city && profile.region) {
-      return `${profile.city}, ${profile.region}`;
+  const getLocationString = (profileData: UserProfileData) => {
+    if (profileData.city && profileData.region) {
+      return `${profileData.city}, ${profileData.region}`;
     }
-    if (profile.region) {
-      return profile.region;
+    if (profileData.region) {
+      return profileData.region;
     }
-    if (profile.city) {
-      return profile.city;
+    if (profileData.city) {
+      return profileData.city;
     }
     return "Location not specified";
   };
 
-  const isPopularSeller = (profile: UserProfile) => {
+  const isPopularSeller = (profileData: UserProfileData) => {
     const rating = profile.rating || 0;
     const totalSales = profile.total_sales || 0;
     const isVerified = profile.is_verified || false;

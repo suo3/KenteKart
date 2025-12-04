@@ -110,7 +110,7 @@ const App = () => {
               <Route path="/favorites" element={<Favorites />} />
               <Route path="/categories" element={<Categories />} />
               <Route path="/category/:categorySlug" element={<Category />} />
-              <Route path="/user/:userId" element={<UserProfile />} />
+              <Route path="/user/:userSlug" element={<UserProfile />} />
               <Route path="/distributor/:distributorId" element={<DistributorProfile />} />
               <Route path="/distributors" element={<Distributors />} />
               <Route path="/seller-onboarding" element={<SellerOnboarding />} />
