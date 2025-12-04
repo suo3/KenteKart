@@ -63,6 +63,10 @@ export const Contact = () => {
                 Have a question, need support, or want to explore advertising opportunities? 
                 We're here to help you succeed on KenteKart.
               </p>
+              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+                <span className="font-bold">Contact Us:</span> <a href="mailto:support@kentekart.com" className="text-primary hover:underline">support@kentekart.com</a>
+
+              </p>
             </div>
 
             {/* Contact Types */}

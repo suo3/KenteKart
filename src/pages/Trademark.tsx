@@ -176,13 +176,13 @@ export default function Trademark() {
               please contact our legal department.
             </p>
             
-            <div className="space-y-4">
+            <div className="display-nonespace-y-4">
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <a 
-                  href="mailto:legal@kentekart.com" 
+                  href="/contact" 
                   className="text-primary hover:underline font-medium"
                 >
-                  legal@kentekart.com
+                 Contact Support
                 </a>
                 <span className="text-muted-foreground hidden sm:block">|</span>
                 <span className="text-muted-foreground">
@@ -190,10 +190,10 @@ export default function Trademark() {
                 </span>
               </div>
               
-              <div className="text-sm text-muted-foreground">
+              {/* <div className="text-sm text-muted-foreground">
                 <p>Registered Office: Accra, Greater Accra Region, Ghana</p>
                 <p>Company Registration: [Registration Number]</p>
-              </div>
+              </div> */}
             </div>
           </Card>
         </div>

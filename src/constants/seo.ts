@@ -16,8 +16,8 @@ export const SEO_CONFIG = {
     name: "KenteKart Ghana",
     description: "Sustainable marketplace for Ghana",
     address: "Accra, Ghana",
-    phone: "+233 XXX XXX XXX", // Update with actual number
-    email: "contact@kentekart.com"
+    phone: "+233 53 666 9982", 
+    email: "support@kentekart.com"
   },
   
   // SEO keywords for Ghana market

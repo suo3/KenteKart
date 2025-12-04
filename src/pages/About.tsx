@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Users, Target, Heart, Shield, ArrowLeft } from "lucide-react";
 import { Footer } from "@/components/Footer";
 import { AppHeader } from "@/components/AppHeader";
+import { Contact } from './Contact';
 
 export default function About() {
   const navigate = useNavigate();
@@ -77,11 +78,17 @@ export default function About() {
               KenteKart was born from a simple vision: to create a trusted, local trading platform 
               that connects Ghanaians across all 16 regions, making it easy to buy, sell, and trade 
               safely within our communities.
+
+              <br/><br/>
+              <span className="font-bold">Contact Us:</span> <a href="mailto:support@kentekart.com" className="text-primary hover:underline">support@kentekart.com</a>
+
+              
+
             </p>
           </div>
 
           {/* Our Story */}
-          <Card className="p-8 md:p-12 mb-16 bg-card border border-primary/10">
+          <Card className="p-8 hidden md:p-12 mb-16 bg-card border border-primary/10">
             <h2 className="text-3xl font-bold mb-6 text-center">Our Story</h2>
             <div className="grid md:grid-cols-2 gap-8 items-center">
               <div>
