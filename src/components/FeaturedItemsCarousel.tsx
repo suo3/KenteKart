@@ -6,6 +6,7 @@ import { Sparkles, Star, Heart, MapPin, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { generateItemUrl } from "@/lib/utils";
 
 export const FeaturedItemsCarousel = () => {
   const { data: promotedItems, isLoading } = usePromotedItems('featured');
@@ -21,8 +22,8 @@ export const FeaturedItemsCarousel = () => {
     return null;
   }
 
-  const handleItemClick = (itemId: string) => {
-    navigate(`/item/${itemId}`);
+  const handleItemClick = (listing: { id: string; title: string }) => {
+    navigate(generateItemUrl(listing.id, listing.title));
   };
 
   return (
@@ -60,7 +61,7 @@ export const FeaturedItemsCarousel = () => {
               <CarouselItem key={item.id} className="pl-2 md:pl-4 basis-full sm:basis-1/2 lg:basis-1/3 xl:basis-1/4">
                 <Card 
                   className="group cursor-pointer border border-yellow-700 hover:shadow-lg transition-all duration-300 hover:-translate-y-1  bg-gradient-card shadow-gold relative "
-                  onClick={() => handleItemClick(listing.id)}
+                  onClick={() => handleItemClick(listing)}
                 >
                   {/* Premium glow effect */}
                   <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-accent/10 to-primary/5 opacity-50"></div>

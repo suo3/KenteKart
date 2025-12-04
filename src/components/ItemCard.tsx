@@ -13,6 +13,7 @@ import { useRatingStore } from "@/stores/ratingStore";
 import { usePlatformSettings } from "@/hooks/usePlatformSettings";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { generateItemUrl } from "@/lib/utils";
 
 interface ItemCardProps {
   item: Listing;
@@ -40,7 +41,7 @@ export const ItemCard = ({ item, onItemClick, onItemLike }: ItemCardProps) => {
     if (onItemClick) {
       onItemClick(item);
     } else {
-      navigate(`/item/${item.id}`);
+      navigate(generateItemUrl(item.id, item.title));
     }
   };
 
